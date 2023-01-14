@@ -5,6 +5,8 @@ import com.example.consumingwebservice.wsdl.GetTrainRequest
 import com.example.consumingwebservice.wsdl.GetTrainResponse
 import com.example.consumingwebservice.wsdl.GetUserRequest
 import com.example.consumingwebservice.wsdl.GetUserResponse
+import com.example.consumingwebservice.wsdl.SubscribeRequest
+import com.example.consumingwebservice.wsdl.SubscribeResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport
@@ -32,7 +34,7 @@ class TrainClient : WebServiceGatewaySupport() {
     fun getUser(username: String,pwd:String): GetUserResponse {
         val request = GetUserRequest()
         request.username = username
-        request.password = pwd
+        request.pwd = pwd
         webServiceTemplate.marshaller = TrainConfiguration().marshaller()
         webServiceTemplate.unmarshaller = TrainConfiguration().marshaller()
         val response = webServiceTemplate.marshalSendAndReceive(
@@ -41,5 +43,21 @@ class TrainClient : WebServiceGatewaySupport() {
             SoapActionCallback("http://localhost:8080/ws/")
         )
         return response as GetUserResponse
+    }
+
+    fun subscribe(username: String,pwd:String,lastName:String,name:String): SubscribeResponse {
+        val request = SubscribeRequest()
+        request.username = username
+        request.pwd = pwd
+        request.lastName = lastName
+        request.name = name
+        webServiceTemplate.marshaller = TrainConfiguration().marshaller()
+        webServiceTemplate.unmarshaller = TrainConfiguration().marshaller()
+        val response = webServiceTemplate.marshalSendAndReceive(
+            "http://localhost:8080/ws",
+            request,
+            SoapActionCallback("http://localhost:8080/ws/")
+        )
+        return response as SubscribeResponse
     }
 }

@@ -58,8 +58,8 @@ object Menu {
             1 -> {
                 val response = quoteClient.getReservations(user.id)
                 for ((index,reservation) in response.reservations.withIndex()) {
-                    println("${index+1} - Départ depuis ${reservation.train.start} à ${reservation.train.date_start} - " +
-                            "Arrivée à ${reservation.train.dest} à ${reservation.train.date_dest} - " +
+                    println("${index+1} - Départ depuis ${reservation.train.start} à ${reservation.train.dateStart} - " +
+                            "Arrivée à ${reservation.train.dest} à ${reservation.train.dateDest} - " +
                             "Réservation en ${reservation.cat} - ")
                 }
             }

@@ -4,7 +4,7 @@ import com.example.consumingwebservice.wsdl.GetUserResponse
 import com.example.consumingwebservice.wsdl.SubscribeResponse
 import com.example.consumingwebservice.wsdl.User
 
-class Menu {
+object Menu {
     private lateinit var user:User
     fun connection(quoteClient: TrainClient): User{
         println("1-Connection")
@@ -45,5 +45,27 @@ class Menu {
             }
         }
         return user
+    }
+
+    fun menu(quoteClient: TrainClient) {
+        println("1-Voir mes réservations")
+        println("2-Chercher un train")
+        var choix:Int
+        do{
+            choix = readln().toInt()
+        }while (choix !=1 && choix != 2)
+        when (choix) {
+            1 -> {
+                val response = quoteClient.getReservations(user.id)
+                for ((index,reservation) in response.reservations.withIndex()) {
+                    println("${index+1} - Départ depuis ${reservation.train.start} à ${reservation.train.date_start} - " +
+                            "Arrivée à ${reservation.train.dest} à ${reservation.train.date_dest} - " +
+                            "Réservation en ${reservation.cat} - ")
+                }
+            }
+            2 -> {
+                println("2-Chercher un train")
+            }
+        }
     }
 }

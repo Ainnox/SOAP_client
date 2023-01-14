@@ -10,8 +10,7 @@ class TrainClientApplication {
         @JvmStatic
         fun main(args: Array<String>) {
             val quoteClient = TrainClient()
-            val menu = Menu()
-            val user = menu.connection(quoteClient)
+            Menu.connection(quoteClient)
         }
     }
 }

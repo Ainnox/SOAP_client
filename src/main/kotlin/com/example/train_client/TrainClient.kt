@@ -1,12 +1,7 @@
 package com.example.train_client
 
 
-import com.example.consumingwebservice.wsdl.GetTrainRequest
-import com.example.consumingwebservice.wsdl.GetTrainResponse
-import com.example.consumingwebservice.wsdl.GetUserRequest
-import com.example.consumingwebservice.wsdl.GetUserResponse
-import com.example.consumingwebservice.wsdl.SubscribeRequest
-import com.example.consumingwebservice.wsdl.SubscribeResponse
+import com.example.consumingwebservice.wsdl.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport
@@ -59,5 +54,18 @@ class TrainClient : WebServiceGatewaySupport() {
             SoapActionCallback("http://localhost:8080/ws/")
         )
         return response as SubscribeResponse
+    }
+
+    fun getReservations(userId: Int): GetReservationsResponse {
+        val request = GetReservationsRequest()
+        request.usrId = userId
+        webServiceTemplate.marshaller = TrainConfiguration().marshaller()
+        webServiceTemplate.unmarshaller = TrainConfiguration().marshaller()
+        val response = webServiceTemplate.marshalSendAndReceive(
+            "http://localhost:8080/ws",
+            request,
+            SoapActionCallback("http://localhost:8080/ws/")
+        )
+        return response as GetReservationsResponse
     }
 }

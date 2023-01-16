@@ -1,6 +1,6 @@
 package com.example.train_client
 
-import com.example.consumingwebservice.wsdl.GetTrainResponse
+import com.example.consumingwebservice.wsdl.GetTrainStartDateResponse
 import com.example.consumingwebservice.wsdl.GetUserResponse
 import com.example.consumingwebservice.wsdl.SubscribeResponse
 
@@ -10,7 +10,8 @@ class TrainClientApplication {
         @JvmStatic
         fun main(args: Array<String>) {
             val quoteClient = TrainClient()
-            Menu.connection(quoteClient)
+            val user = Menu.connection(quoteClient)
+            Menu.menu(quoteClient)
         }
     }
 }

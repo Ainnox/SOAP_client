@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter
 class TrainClient : WebServiceGatewaySupport() {
 //    private val log: Logger = LoggerFactory.getLogger(TrainClient::class.java)
 
-    fun getTrainStartDate(start: String, dest: String): GetTrainStartDateResponse {
+    fun getTrainStartDate(start: String, dest: String,dateStart:String): GetTrainStartDateResponse {
         val request = GetTrainStartDateRequest()
         request.start = start
         request.dest = dest

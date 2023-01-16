@@ -69,4 +69,34 @@ class TrainClient : WebServiceGatewaySupport() {
         )
         return response as GetReservationsResponse
     }
+
+    fun getReservation(idTrain:Int,idUser:Int,classe:String,quantite:Int): GetReservationResponse {
+        val request = GetReservationRequest()
+        request.idUser = idUser
+        request.idTrain = idTrain
+        request.classe = classe
+        request.quantite = quantite
+        webServiceTemplate.marshaller = TrainConfiguration().marshaller()
+        webServiceTemplate.unmarshaller = TrainConfiguration().marshaller()
+        val response = webServiceTemplate.marshalSendAndReceive(
+            "http://localhost:8080/ws",
+            request,
+            SoapActionCallback("http://localhost:8080/ws/")
+        )
+        return response as GetReservationResponse
+    }
+
+    fun getAnnulation(idUser:Int,idReservation:Int): GetAnnulationResponse {
+        val request = GetAnnulationRequest()
+        request.idUser = idUser
+        request.idReservation = idReservation
+        webServiceTemplate.marshaller = TrainConfiguration().marshaller()
+        webServiceTemplate.unmarshaller = TrainConfiguration().marshaller()
+        val response = webServiceTemplate.marshalSendAndReceive(
+            "http://localhost:8080/ws",
+            request,
+            SoapActionCallback("http://localhost:8080/ws/")
+        )
+        return response as GetAnnulationResponse
+    }
 }

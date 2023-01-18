@@ -1,9 +1,6 @@
 package com.example.train_client
 
-import com.example.consumingwebservice.wsdl.GetUserResponse
-import com.example.consumingwebservice.wsdl.Reservations
-import com.example.consumingwebservice.wsdl.SubscribeResponse
-import com.example.consumingwebservice.wsdl.User
+import com.example.consumingwebservice.wsdl.*
 import java.time.LocalTime
 
 
@@ -92,19 +89,30 @@ class Menu(private val quoteClient: TrainClient) {
                     1 -> {
                         println("Sélectionner un train :")
                         val indexTrain = readln().toInt()
-                        println("Sélectionner une quantité :")
-                        val quantity = readln().toInt()
                         println("Sélectioner une catégorie :")
-                        println("1-business classe")
-                        println("2-standard classe")
-                        println("3-première classe")
+                        if (trainList[indexTrain-1].businessClassRemaining > 0) {
+                            println("1-Business")
+                        }else
+                            println("Business (complet)")
+                        if (trainList[indexTrain-1].firstClassRemaining > 0) {
+                            println("2-Première")
+                        }else
+                            println("Première (complet)")
+                        if (trainList[indexTrain-1].standardClassRemaining > 0) {
+                            println("3-standard")
+                        }else
+                            println("Standard (complet)")
+                        println("4-Retour")
                         val classe = when (readln().toInt()) {
                             1 -> "business"
                             2 -> "standard"
                             3 -> "first"
+                            4 -> return true
                             else -> "standard"
                         }
-                        reserver(idTrain = trainList[indexTrain-1],quantite = quantity,classe = classe)
+                        println("Sélectionner une quantité :")
+                        val quantity = readln().toInt()
+                        reserver(idTrain = trainList[indexTrain-1].idTrain,quantite = quantity,classe = classe)
                         return true
                     }
                 }
@@ -121,7 +129,7 @@ class Menu(private val quoteClient: TrainClient) {
         return true
     }
 
-    private fun chercherTrain():List<Int> {
+    private fun chercherTrain():List<Train> {
         println("2-Chercher un train")
         println("Entrez votre ville de départ :")
         val start = readln()
@@ -131,7 +139,7 @@ class Menu(private val quoteClient: TrainClient) {
         val dateStart = readln() + " " + LocalTime.now().toString()
 
         val response = quoteClient.getTrainStartDate(start, dest, dateStart)
-        val trainList = MutableList(0){0}
+        val trainList = MutableList(0){Train()}
         if (response.trains.size == 0)
             System.err.println("Aucun train trouvé")
         else {
@@ -140,7 +148,7 @@ class Menu(private val quoteClient: TrainClient) {
                     "${index + 1} - Départ depuis ${train.start} à ${train.dateStart} - " +
                             "Arrivée à ${train.dest} à ${train.dateDest} "
                 )
-                trainList.add(train.idTrain)
+                trainList.add(train)
             }
         }
         return trainList
